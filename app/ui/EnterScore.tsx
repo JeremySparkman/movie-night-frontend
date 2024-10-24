@@ -13,7 +13,7 @@ export function EnterScore({
   const handleClick = async () => {
     try {
       const serverUrl = 'localhost';
-      const response = await fetch(`http://${serverUrl}/vote`, {
+      const response = await fetch(`http://${serverUrl}/event`, {
         method: 'POST',
         body: JSON.stringify({
           voter,

@@ -14,7 +14,7 @@ export function EnterName({ setName, setHasStarted }: IEnterName) {
   const handleClick = async () => {
     setName(value);
     try {
-      const response = await fetch(`http://${serverUrl}/vote`, {
+      const response = await fetch(`http://${serverUrl}/event`, {
         method: 'POST',
         body: JSON.stringify({
           voter: value,

@@ -20,7 +20,6 @@ const Room = () => {
       if (lastMessage.data) {
         const messageJson = JSON.parse(lastMessage.data);
 
-        console.log(messageJson);
         if (messageJson.type === 'update') {
           const update: IVoter[] = [];
           const votingRecord = messageJson.data;
