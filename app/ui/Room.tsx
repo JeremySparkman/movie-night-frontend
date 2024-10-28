@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useState } from 'react';
 import useWebSocket from 'react-use-websocket';
 
@@ -6,12 +7,48 @@ interface IVoter {
   score: string | null;
 }
 
-const Room = () => {
+const getVoterList = (votingRecord: {
+  [x: string]: { voter: string; score: string };
+}) => {
+  const voterList: IVoter[] = [];
+  for (const voter in votingRecord) {
+    voterList.push({
+      name: votingRecord[voter].voter,
+      score: votingRecord[voter].score,
+    });
+  }
+  return voterList;
+};
+
+export function Room() {
   const [, setMessageHistory] = useState<MessageEvent<string>[]>([]);
   const [voters, setVoters] = useState<IVoter[]>([]);
 
   const serverUrl = 'localhost';
   const { lastMessage } = useWebSocket(`ws://${serverUrl}/ws`);
+
+  useEffect(() => {
+    const getStatus = async () => {
+      try {
+        const response = await fetch(`http://${serverUrl}/status`, {
+          method: 'GET',
+        });
+
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        const voterList = getVoterList(result.data);
+
+        setVoters(voterList);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getStatus();
+  }, []);
 
   useEffect(() => {
     if (lastMessage !== null) {
@@ -21,16 +58,9 @@ const Room = () => {
         const messageJson = JSON.parse(lastMessage.data);
 
         if (messageJson.type === 'update') {
-          const update: IVoter[] = [];
-          const votingRecord = messageJson.data;
-          for (const voter in votingRecord) {
-            update.push({
-              name: votingRecord[voter].voter,
-              score: votingRecord[voter].score,
-            });
-          }
+          const voterList = getVoterList(messageJson.data);
 
-          setVoters(update);
+          setVoters(voterList);
         }
       }
     }
@@ -46,6 +76,4 @@ const Room = () => {
       ))}
     </div>
   );
-};
-
-export default Room;
+}

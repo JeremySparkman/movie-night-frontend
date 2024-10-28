@@ -1,14 +1,12 @@
-import { useState } from 'react';
-import { Button } from './Button';
+'use client';
 
-export function EnterScore({
-  setHasScored,
-  voter,
-}: {
-  setHasScored: (val: boolean) => void;
-  voter: string;
-}) {
+import { useAuth } from 'providers/AuthProvider';
+import { useState } from 'react';
+import { Button } from 'ui';
+
+const Page = () => {
   const [score, setScore] = useState('');
+  const { user } = useAuth();
 
   const handleClick = async () => {
     try {
@@ -16,7 +14,7 @@ export function EnterScore({
       const response = await fetch(`http://${serverUrl}/event`, {
         method: 'POST',
         body: JSON.stringify({
-          voter,
+          voter: user,
           score,
         }),
       });
@@ -24,11 +22,8 @@ export function EnterScore({
       if (!response.ok) {
         throw new Error(`Response status: ${response.status}`);
       }
-
-      setHasScored(true);
     } catch (err) {
       console.error(err);
-      setHasScored(false);
     }
   };
 
@@ -49,7 +44,11 @@ export function EnterScore({
               value={score}
               onChange={(e) => setScore(e.target.value)}
             />
-            <Button onClick={handleClick} className="mt-4 w-full">
+            <Button
+              onClick={handleClick}
+              className="mt-4 w-full"
+              href="/result"
+            >
               Submit
             </Button>
           </div>
@@ -57,4 +56,6 @@ export function EnterScore({
       </div>
     </>
   );
-}
+};
+
+export default Page;
