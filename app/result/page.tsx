@@ -1,4 +1,4 @@
-import { Button, Room } from 'ui';
+import { Button, Room } from 'components';
 
 const Page = () => {
   return (

@@ -2,7 +2,7 @@
 
 import { useAuth } from 'providers/AuthProvider';
 import { useState } from 'react';
-import { Button } from 'ui';
+import { Button } from 'components';
 
 const Page = () => {
   const [score, setScore] = useState('');

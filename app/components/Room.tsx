@@ -27,6 +27,9 @@ export function Room() {
   const serverUrl = 'localhost';
   const { lastMessage } = useWebSocket(`ws://${serverUrl}/ws`);
 
+  const sum = voters.reduce((a, b) => a + Number(b.score), 0);
+  const averageScore = sum / voters.length || null;
+
   useEffect(() => {
     const getStatus = async () => {
       try {
@@ -67,13 +70,18 @@ export function Room() {
   }, [lastMessage]);
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 mb-3">
-      {voters.map((voter) => (
-        <div key={voter.name}>
-          <h1>{voter.name}</h1>
-          <h2>{voter.score ? voter.score : '... Waiting for vote'}</h2>
-        </div>
-      ))}
-    </div>
+    <>
+      {averageScore && (
+        <h1 className="mb-8">Average Score: {averageScore.toFixed(2)}</h1>
+      )}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 mb-3">
+        {voters.map((voter) => (
+          <div key={voter.name}>
+            <h1>{voter.name}</h1>
+            <h2>{voter.score ? voter.score : '... Waiting for vote'}</h2>
+          </div>
+        ))}
+      </div>
+    </>
   );
 }

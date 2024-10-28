@@ -1,7 +1,7 @@
 'use client';
 import { useAuth } from 'providers/AuthProvider';
 import { useState } from 'react';
-import { Button } from 'ui/Button';
+import { Button } from 'components';
 
 const Page = () => {
   const { setUser } = useAuth();

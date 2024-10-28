@@ -19,7 +19,6 @@ export const AuthProvider = ({
 }>) => {
   const [user, setUser] = useState<string>('');
 
-  console.log(user);
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       {children}
