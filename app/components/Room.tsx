@@ -1,5 +1,7 @@
 'use client';
+import { useAuth } from 'providers/AuthProvider';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import useWebSocket from 'react-use-websocket';
 
 interface IVoter {
@@ -23,6 +25,8 @@ const getVoterList = (votingRecord: {
 export function Room() {
   const [, setMessageHistory] = useState<MessageEvent<string>[]>([]);
   const [voters, setVoters] = useState<IVoter[]>([]);
+  const { user } = useAuth();
+  const router = useRouter();
 
   const serverUrl = 'localhost';
   const { lastMessage } = useWebSocket(`ws://${serverUrl}/ws`);
@@ -34,7 +38,8 @@ export function Room() {
     const getStatus = async () => {
       try {
         const response = await fetch(`http://${serverUrl}/status`, {
-          method: 'GET',
+          method: 'POST',
+          body: JSON.stringify(user?.room),
         });
 
         if (!response.ok) {
@@ -43,7 +48,7 @@ export function Room() {
 
         const result = await response.json();
 
-        const voterList = getVoterList(result.data);
+        const voterList = getVoterList(result.data.voters);
 
         setVoters(voterList);
       } catch (err) {
@@ -51,26 +56,38 @@ export function Room() {
       }
     };
     getStatus();
-  }, []);
+  }, [user?.room]);
 
   useEffect(() => {
     if (lastMessage !== null) {
       setMessageHistory((prev) => prev.concat(lastMessage));
 
-      if (lastMessage.data) {
+      if (!!lastMessage.data) {
         const messageJson = JSON.parse(lastMessage.data);
 
-        if (messageJson.type === 'update') {
-          const voterList = getVoterList(messageJson.data);
+        const voterList = getVoterList(messageJson[user?.room || ''].voters);
 
-          setVoters(voterList);
-        }
+        setVoters(voterList);
       }
     }
-  }, [lastMessage]);
+  }, [lastMessage, user?.room]);
 
   return (
     <>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-2xl font-bold">Room: {user?.room}</h1>
+        <button
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+          onClick={() => {
+            if (typeof window !== 'undefined') {
+              localStorage.removeItem('user');
+            }
+            router.push('/');
+          }}
+        >
+          Logout
+        </button>
+      </div>
       {averageScore && (
         <h1 className="mb-8">Average Score: {averageScore.toFixed(2)}</h1>
       )}

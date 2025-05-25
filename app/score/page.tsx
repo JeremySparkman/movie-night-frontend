@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Button } from 'components';
 
 const Page = () => {
-  const [score, setScore] = useState('');
+  const [score, setScore] = useState('3');
   const { user } = useAuth();
 
   const handleClick = async () => {
@@ -14,8 +14,9 @@ const Page = () => {
       const response = await fetch(`http://${serverUrl}/event`, {
         method: 'POST',
         body: JSON.stringify({
-          voter: user,
+          voter: user?.name,
           score,
+          room: user?.room,
         }),
       });
 
@@ -32,26 +33,32 @@ const Page = () => {
       <h1 className="mb-3 text-2xl">Please enter your score</h1>
       <div className="w-full">
         <div>
-          <label className="mb-3 mt-5 block text-xs font-medium" htmlFor="name">
+          <label
+            className="mb-3 mt-5 block text-sm font-medium"
+            htmlFor="score"
+          >
             Score {score}
           </label>
-          <div className="relative">
-            <input
-              type="range"
-              min="0"
-              max="5"
-              step="0.5"
-              value={score}
-              onChange={(e) => setScore(e.target.value)}
-            />
-            <Button
-              onClick={handleClick}
-              className="mt-4 w-full"
-              href="/result"
-            >
-              Submit
-            </Button>
+          <div className="flex items-center space-x-2 mb-4" id="score">
+            {[1, 2, 3, 4, 5].map((value) => (
+              <button
+                key={value}
+                type="button"
+                aria-label={`Rate ${value}`}
+                className={
+                  value <= Number(score)
+                    ? 'text-yellow-400 text-3xl focus:outline-none'
+                    : 'text-gray-300 text-3xl focus:outline-none'
+                }
+                onClick={() => setScore(value.toString())}
+              >
+                ★
+              </button>
+            ))}
           </div>
+          <Button onClick={handleClick} className="mt-4 w-full" href="/result">
+            Submit
+          </Button>
         </div>
       </div>
     </>

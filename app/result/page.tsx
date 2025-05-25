@@ -5,7 +5,9 @@ const Page = () => {
     <div>
       <Room />
       <h1>Thank you for voting</h1>
-      <Button href="/">Back to Login</Button>
+      <Button className="mt-4" href="/">
+        Back to Login
+      </Button>
     </div>
   );
 };

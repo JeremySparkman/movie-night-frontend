@@ -1,14 +1,19 @@
 'use client';
 
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+
+type User = {
+  name: string;
+  room: string;
+};
 
 type IAuthContextType = {
-  user: string;
-  setUser: React.Dispatch<React.SetStateAction<string>>;
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
 const AuthContext = createContext<IAuthContextType>({
-  user: '',
+  user: null,
   setUser: (val) => val,
 });
 
@@ -17,7 +22,29 @@ export const AuthProvider = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const [user, setUser] = useState<string>('');
+  const [user, setUserState] = useState<User | null>(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem('user');
+    if (stored) {
+      setUserState(JSON.parse(stored));
+    }
+  }, []);
+
+  const setUser = (val: User | null | ((prev: User | null) => User | null)) => {
+    setUserState((prev) => {
+      const next =
+        typeof val === 'function'
+          ? (val as (prev: User | null) => User | null)(prev)
+          : val;
+      if (next) {
+        localStorage.setItem('user', JSON.stringify(next));
+      } else {
+        localStorage.removeItem('user');
+      }
+      return next;
+    });
+  };
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
