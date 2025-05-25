@@ -77,7 +77,7 @@ export function Room() {
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-2xl font-bold">Room: {user?.room}</h1>
         <button
-          className="pl-8 pr-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+          className="flex h-10 items-center rounded-lg bg-red-500 px-4 text-sm font-medium text-white transition-colors hover:bg-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500 active:bg-red-700 aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
           onClick={() => {
             if (typeof window !== 'undefined') {
               localStorage.removeItem('user');
