@@ -2,7 +2,7 @@
 
 import { useAuth } from 'providers/AuthProvider';
 import { useState } from 'react';
-import { Button } from 'components';
+import { Button, Room } from 'components';
 
 const Page = () => {
   const [score, setScore] = useState('3');
@@ -30,6 +30,7 @@ const Page = () => {
 
   return (
     <>
+      <Room />
       <h1 className="mb-3 text-2xl">Please enter your score</h1>
       <div className="w-full">
         <div>
@@ -56,7 +57,7 @@ const Page = () => {
               </button>
             ))}
           </div>
-          <Button onClick={handleClick} className="mt-4 w-full" href="/result">
+          <Button onClick={handleClick} className="mt-4" href="/result">
             Submit
           </Button>
         </div>

@@ -72,6 +72,10 @@ export function Room() {
     }
   }, [lastMessage, user?.room]);
 
+  const allVoted =
+    voters.length > 0 &&
+    voters.every((v) => v.score !== null && v.score !== '');
+
   return (
     <>
       <div className="flex items-center justify-between mb-8">
@@ -88,14 +92,20 @@ export function Room() {
           Logout
         </button>
       </div>
-      {averageScore && (
+      {allVoted && averageScore && (
         <h1 className="mb-8">Average Score: {averageScore.toFixed(2)}</h1>
       )}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 mb-3">
         {voters.map((voter) => (
           <div key={voter.name}>
             <h1>{voter.name}</h1>
-            <h2>{voter.score ? voter.score : '... Waiting for vote'}</h2>
+            <h2>
+              {allVoted
+                ? voter.score
+                : voter.name === user?.name && voter.score
+                ? voter.score
+                : '... Waiting for vote'}
+            </h2>
           </div>
         ))}
       </div>

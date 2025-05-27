@@ -75,14 +75,14 @@ const Page = () => {
                 }}
                 type="text"
                 name="room"
-                placeholder="Enter your Room name"
+                placeholder="Enter your room name"
                 required
                 value={roomName}
               />
             </label>
           </div>
           {error && <div className="mt-8 text-red-500">{error}</div>}
-          <Button className="mt-8 w-full" type="submit">
+          <Button className="mt-8" type="submit">
             Join
           </Button>
         </div>
