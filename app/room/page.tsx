@@ -11,7 +11,7 @@ const Page = () => {
   const { user, setUser } = useAuth();
   const router = useRouter();
 
-  const serverUrl = 'localhost';
+  const serverUrl = process.env.NEXT_PUBLIC_API_URL || 'localhost';
 
   useEffect(() => {
     const fetchRooms = async () => {

@@ -8,7 +8,7 @@ export function RoomList({ rooms }: { rooms: string[] }) {
   const { user, setUser } = useAuth();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  const serverUrl = 'localhost';
+  const serverUrl = process.env.NEXT_PUBLIC_API_URL || 'localhost';
 
   const handleSubmit = async (event: FormEvent, room: string) => {
     event.preventDefault();

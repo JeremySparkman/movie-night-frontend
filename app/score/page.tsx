@@ -10,7 +10,7 @@ const Page = () => {
 
   const handleClick = async () => {
     try {
-      const serverUrl = 'localhost';
+      const serverUrl = process.env.NEXT_PUBLIC_API_URL || 'localhost';
       const response = await fetch(`http://${serverUrl}/event`, {
         method: 'POST',
         body: JSON.stringify({

@@ -26,7 +26,7 @@ export function Room() {
   const [voters, setVoters] = useState<IVoter[]>([]);
   const { user } = useAuth();
 
-  const serverUrl = 'localhost';
+  const serverUrl = process.env.NEXT_PUBLIC_API_URL || 'localhost';
   const { lastMessage } = useWebSocket(`ws://${serverUrl}/ws`);
 
   const sum = voters.reduce((a, b) => a + Number(b.score), 0);
