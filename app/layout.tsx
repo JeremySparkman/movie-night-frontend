@@ -30,7 +30,7 @@ export default function RootLayout({
       >
         <AuthProvider>
           <main className="flex flex-col items-center justify-center">
-            <div className="rounded-l px-6 pb-4 pt-8">{children}</div>
+            <div className="rounded-l pb-4 pt-8">{children}</div>
           </main>
         </AuthProvider>
       </body>

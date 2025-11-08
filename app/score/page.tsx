@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Button, Room } from 'components';
 
 const Page = () => {
-  const [score, setScore] = useState('3');
+  const [score, setScore] = useState('2.5');
   const { user } = useAuth();
 
   const handleClick = async () => {
@@ -31,33 +31,31 @@ const Page = () => {
   return (
     <>
       <Room />
-      <h1 className="mb-3 text-2xl">Please enter your score</h1>
+      <h1 className="mt-10 mb-3 text-2xl font-bold">Please enter your score</h1>
       <div className="w-full">
         <div>
-          <label
-            className="mb-3 mt-5 block text-sm font-medium"
-            htmlFor="score"
-          >
-            Score {score}
+          <label className="mb-3 mt-5 block text-md font-bold" htmlFor="score">
+            Score: {Number(score).toFixed(2)}
           </label>
-          <div className="flex items-center space-x-2 mb-4" id="score">
-            {[1, 2, 3, 4, 5].map((value) => (
-              <button
-                key={value}
-                type="button"
-                aria-label={`Rate ${value}`}
-                className={
-                  value <= Number(score)
-                    ? 'text-yellow-400 text-3xl focus:outline-none'
-                    : 'text-gray-300 text-3xl focus:outline-none'
-                }
-                onClick={() => setScore(value.toString())}
-              >
-                ★
-              </button>
-            ))}
+          <input
+            type="range"
+            id="score"
+            min="0"
+            max="5"
+            step="0.25"
+            value={score}
+            onChange={(e) => setScore(e.target.value)}
+            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+          />
+          <div className="flex justify-between text-sm text-white font-bold mt-1">
+            <span>0</span>
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
           </div>
-          <Button onClick={handleClick} className="mt-4" href="/result">
+          <Button onClick={handleClick} className="mt-10" href="/result">
             Submit
           </Button>
         </div>

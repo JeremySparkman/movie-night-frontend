@@ -3,8 +3,8 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
 type User = {
-  name: string;
-  room: string;
+  name?: string;
+  room?: string;
 };
 
 type IAuthContextType = {
