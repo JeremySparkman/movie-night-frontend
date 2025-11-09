@@ -36,7 +36,7 @@ const Page = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch(`http://${serverUrl}/event`, {
+      const response = await fetch(`https://${serverUrl}/event`, {
         method: 'POST',
         body: JSON.stringify({
           voter: user?.name,

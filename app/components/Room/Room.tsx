@@ -35,7 +35,7 @@ export function Room() {
   useEffect(() => {
     const getStatus = async () => {
       try {
-        const response = await fetch(`http://${serverUrl}/status`, {
+        const response = await fetch(`https://${serverUrl}/status`, {
           method: 'POST',
           body: JSON.stringify(user?.room),
         });
