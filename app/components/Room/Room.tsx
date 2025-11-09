@@ -27,7 +27,20 @@ export function Room() {
   const { user } = useAuth();
 
   const serverUrl = process.env.NEXT_PUBLIC_API_URL;
-  const { lastMessage } = useWebSocket(`wss://${serverUrl}/ws`);
+  const { lastMessage, readyState } = useWebSocket(`wss://${serverUrl}/ws`, {
+    shouldReconnect: () => true,
+    reconnectInterval: 3000,
+    reconnectAttempts: 10,
+    onError: (event) => {
+      console.error('WebSocket error:', event);
+    },
+    onOpen: () => {
+      console.log('WebSocket connected');
+    },
+    onClose: () => {
+      console.log('WebSocket disconnected');
+    },
+  });
 
   const sum = voters.reduce((a, b) => a + Number(b.score), 0);
   const averageScore = sum / voters.length || null;
@@ -85,6 +98,7 @@ export function Room() {
     <>
       <div className="mb-8">
         <h1 className="text-2xl font-bold">Room: {user?.room}</h1>
+        <h2 className="text-xl">Connection status: {readyState}</h2>
       </div>
       {allVoted && averageScore && (
         <h1 className="mb-8">Average Score: {averageScore.toFixed(2)}</h1>
