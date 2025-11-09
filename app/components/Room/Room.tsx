@@ -27,7 +27,7 @@ export function Room() {
   const { user } = useAuth();
 
   const serverUrl = process.env.NEXT_PUBLIC_API_URL;
-  const { lastMessage } = useWebSocket(`ws://${serverUrl}/ws`);
+  const { lastMessage } = useWebSocket(`wss://${serverUrl}/ws`);
 
   const sum = voters.reduce((a, b) => a + Number(b.score), 0);
   const averageScore = sum / voters.length || null;
