@@ -10,8 +10,8 @@ const Page = () => {
 
   const handleClick = async () => {
     try {
-      const serverUrl = process.env.NEXT_PUBLIC_API_URL || 'localhost';
-      const response = await fetch(`http://${serverUrl}/event`, {
+      const serverUrl = process.env.NEXT_PUBLIC_API_URL;
+      const response = await fetch(`https://${serverUrl}/event`, {
         method: 'POST',
         body: JSON.stringify({
           voter: user?.name,

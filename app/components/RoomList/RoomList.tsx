@@ -8,13 +8,13 @@ export function RoomList({ rooms }: { rooms: string[] }) {
   const { user, setUser } = useAuth();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  const serverUrl = process.env.NEXT_PUBLIC_API_URL || 'localhost';
+  const serverUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const handleSubmit = async (event: FormEvent, room: string) => {
     event.preventDefault();
 
     try {
-      const response = await fetch(`http://${serverUrl}/event`, {
+      const response = await fetch(`https://${serverUrl}/event`, {
         method: 'POST',
         body: JSON.stringify({
           voter: user?.name,

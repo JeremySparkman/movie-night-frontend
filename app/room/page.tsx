@@ -11,12 +11,12 @@ const Page = () => {
   const { user, setUser } = useAuth();
   const router = useRouter();
 
-  const serverUrl = process.env.NEXT_PUBLIC_API_URL || 'localhost';
+  const serverUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const response = await fetch(`http://${serverUrl}/rooms`);
+        const response = await fetch(`https://${serverUrl}/rooms`);
         if (!response.ok) {
           throw new Error(`Response status: ${response.status}`);
         }
